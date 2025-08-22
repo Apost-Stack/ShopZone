@@ -8,5 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Status extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name'];
+
+    /**
+     * Get the provinces associated with the status.
+     */
+    public function provinces()
+    {
+        return $this->hasMany(Province::class);
+    }
 }

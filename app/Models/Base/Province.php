@@ -8,5 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Province extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
+
+    protected $fillable = [
+        'name',
+        'status_id',
+    ];
+
+    /**
+     * Get the status associated with the province.
+     */
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
+    }
 }
