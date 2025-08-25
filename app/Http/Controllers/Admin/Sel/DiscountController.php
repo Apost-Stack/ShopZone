@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Sel;
+namespace App\Http\Controllers\Admin\Sel;
 
 use App\Common\CommonAdminView;
 use App\Http\Controllers\Controller;

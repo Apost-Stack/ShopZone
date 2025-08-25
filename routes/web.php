@@ -8,11 +8,11 @@ Route::get('/', function () {
 
 
 Route::prefix('/Administration')->group(function () {
-    Route::resource('/statuses', \App\Http\Controllers\Base\StatusController::class);
+    Route::resource('/statuses', \App\Http\Controllers\Admin\Base\StatusController::class);
     //Sel
     Route::prefix('/Sel')->group(function () {
         Route::prefix('/products')->group(function () {
-            Route::resource('/categories', \App\Http\Controllers\Sel\Product\CategoryController::class);
+            Route::resource('/categories', \App\Http\Controllers\Admin\Sel\Product\CategoryController::class);
         });
     });
 });

@@ -5,6 +5,38 @@ namespace App\Common;
 class CommonAdminView
 {
 
+    //------------------------------------------------- Delivery
+    public static function getDeliveryListView(): string
+    {
+        return self::baseView(). 'action.delivery.index';
+    }
+
+    public static function getDeliveryFormView(): string
+    {
+        return self::baseView(). 'action.delivery.form';
+    }
+
+    public static function getDeliveryShowView(): string
+    {
+        return self::baseView(). 'action.delivery.show';
+    }
+    //--------------------------------------------------------
+    //------------------------------------------------- Orders
+    public static function getOrderListView(): string
+    {
+        return self::baseView().'action.order.index';
+    }
+
+    public static function getOrderFormView(): string
+    {
+        return self::baseView().'action.order.form';
+    }
+
+    public static function getOrderShowView(): string
+    {
+        return self::baseView().'action.order.show';
+    }
+    //----------------------------------------------------------
     //------------------------------------------------- Discount
     public static function getDiscountListView(): string
     {
