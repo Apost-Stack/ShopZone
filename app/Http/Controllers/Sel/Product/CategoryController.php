@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Sel\Product;
 
+use App\Common\CommonAdminView;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sel\Product\CategoryRequest;
 use App\Models\Sel\Product\Category;
@@ -33,14 +34,12 @@ class CategoryController extends Controller
     /**
      * Affiche la liste paginée des catégories.
      *
-     * @param Request $request
      * @return View
      */
-    public function index(Request $request): View
+    public function index(): View
     {
-        $perPage = (int) $request->query('per_page', 15);
-        $categories = Category::with(['status', 'products'])->paginate($perPage);
-        return view('sel.product.categories.index', compact('categories'));
+        $categories = Category::with(['status', 'products'])->paginate(10);
+        return view(CommonAdminView::getCategoryListView(), compact('categories'));
     }
 
     /**
@@ -51,7 +50,7 @@ class CategoryController extends Controller
     public function create(): View
     {
         $statuses = \App\Models\Base\Status::all();
-        return view('sel.product.categories.create', compact('statuses'));
+        return view(CommonAdminView::getCategoryEditOrCreateView(),compact('statuses'));
     }
 
     /**
@@ -62,16 +61,20 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request): RedirectResponse
     {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        if ($request->hasFile('picture')) {
-            $baseFolder = $request->input('folder', 'exemple');
-            $data['picture'] = $this->images->saveImage($request->file('picture'), $baseFolder);
+            if ($request->hasFile('picture')) {
+                $baseFolder = $request->input('folder', 'exemple');
+                $data['picture'] = $this->images->saveImage($request->file('picture'), $baseFolder);
+            }
+
+            Category::create($data);
+
+            return redirect()->route('categories.index')->with('success', 'Catégorie créée.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => 'Erreur lors de la création de la catégorie.']);
         }
-
-        Category::create($data);
-
-        return redirect()->route('categories.index')->with('success', 'Catégorie créée.');
     }
 
     /**
@@ -83,7 +86,7 @@ class CategoryController extends Controller
     public function show(Category $category): View
     {
         $category->load(['status', 'products']);
-        return view('sel.product.categories.show', compact('category'));
+        return view(CommonAdminView::getCategoryShowView(), compact('category'));
     }
 
     /**
@@ -95,7 +98,7 @@ class CategoryController extends Controller
     public function edit(Category $category): View
     {
         $statuses = \App\Models\Base\Status::all();
-        return view('sel.product.categories.edit', compact('category', 'statuses'));
+        return view(CommonAdminView::getCategoryEditOrCreateView(), compact('category', 'statuses'));
     }
 
     /**
@@ -107,20 +110,24 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category): RedirectResponse
     {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        if ($request->hasFile('picture')) {
-            if ($category->picture) {
-                $storagePath = preg_replace('#^/storage/#', 'public/', $category->picture);
-                Storage::delete($storagePath);
+            if ($request->hasFile('picture')) {
+                if ($category->picture) {
+                    $storagePath = preg_replace('#^/storage/#', 'public/', $category->picture);
+                    Storage::delete($storagePath);
+                }
+                $baseFolder = $request->input('folder', 'exemple');
+                $data['picture'] = $this->images->saveImage($request->file('picture'), $baseFolder);
             }
-            $baseFolder = $request->input('folder', 'exemple');
-            $data['picture'] = $this->images->saveImage($request->file('picture'), $baseFolder);
+
+            $category->update($data);
+
+            return redirect()->route('categories.index')->with('success', 'Catégorie mise à jour.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => 'Erreur lors de la mise à jour de la catégorie.']);
         }
-
-        $category->update($data);
-
-        return redirect()->route('categories.index')->with('success', 'Catégorie mise à jour.');
     }
 
     /**
@@ -131,13 +138,17 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category): RedirectResponse
     {
-        if ($category->picture) {
-            $storagePath = preg_replace('#^/storage/#', 'public/', $category->picture);
-            Storage::delete($storagePath);
+        try {
+            if ($category->picture) {
+                $storagePath = preg_replace('#^/storage/#', 'public/', $category->picture);
+                Storage::delete($storagePath);
+            }
+
+            $category->delete();
+
+            return redirect()->route('categories.index')->with('success', 'Catégorie supprimée.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => 'Erreur lors de la suppression de la catégorie.']);
         }
-
-        $category->delete();
-
-        return redirect()->route('categories.index')->with('success', 'Catégorie supprimée.');
     }
 }
