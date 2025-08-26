@@ -3,7 +3,6 @@
 @section('title', 'Bienvenue sur ShopZone - Votre Boutique en Ligne')
 
 @section('hero')
- <!-- Hero Section (Exemple de contenu) -->
     <section class="hero-section fade-in-up">
         <div class="container">
             <h1 class="hero-title">Nouvelle Collection Printemps</h1>
