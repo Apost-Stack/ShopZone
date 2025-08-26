@@ -1,0 +1,42 @@
+{
+  "name": "Laravel Ruleset",
+  "description": "Bonnes pratiques pour un projet Laravel",
+  "rules": [
+    {
+      "name": "No Raw SQL",
+      "description": "Éviter l'utilisation directe de SQL brut. Utiliser Eloquent ou Query Builder.",
+      "severity": "error",
+      "pattern": "(DB::select|DB::statement|DB::unprepared)"
+    },
+    {
+      "name": "Prefer Eloquent",
+      "description": "Favoriser l'utilisation d'Eloquent Models au lieu de DB::table pour plus de clarté et sécurité.",
+      "severity": "warning",
+      "pattern": "DB::table"
+    },
+    {
+      "name": "No dd or dump in production",
+      "description": "Éviter d'utiliser dd() ou dump() dans le code de production.",
+      "severity": "error",
+      "pattern": "(dd\\(|dump\\()"
+    },
+    {
+      "name": "Validation Rule Required",
+      "description": "S'assurer que toutes les méthodes de contrôleur qui stockent des données valident l'input.",
+      "severity": "warning",
+      "pattern": "public function store"
+    },
+    {
+      "name": "Use Named Routes",
+      "description": "Encourager l'utilisation de route() avec des noms plutôt que des URLs statiques.",
+      "severity": "info",
+      "pattern": "url\\(|URL::to\\("
+    },
+    {
+      "name": "Use Config and Env Properly",
+      "description": "Éviter d'utiliser env() directement hors des fichiers de config.",
+      "severity": "error",
+      "pattern": "env\\("
+    }
+  ]
+}
