@@ -5,6 +5,50 @@ namespace App\Common;
 class CommonAdminView
 {
 
+    //-------------------------------------------------Customer
+    public static function getCustomerListView(): string
+    {
+        return self::baseView().'user.customer.list';
+    }
+    public static function getCustomerShowView(): string
+    {
+        return self::baseView().'user.customer.show';
+    }
+    public static function getCustomerEditOrCreateView(): string
+    {
+        return self::baseView().'user.customer.createOrEdit';
+    }
+    //-----------------------------------------------------
+    //-------------------------------------------------User
+    public static function getUserListView(): string
+    {
+        return self::baseView().'user.user.list';
+    }
+    public static function getUserShowView(): string
+    {
+        return self::baseView().'user.user.show';
+    }
+    public static function getUserEditOrCreateView(): string
+    {
+        return self::baseView().'user.user.createOrEdit';
+    }
+    //-----------------------------------------------------
+    //------------------------------------------------- Employee
+    public static function getEmployeeListView(): string
+    {
+        return self::baseView().'user.employees.list';
+    }
+
+    public static function getEmployeeShowView(): string
+    {
+        return self::baseView().'user.employees.show';
+    }
+
+    public static function getEmployeeEditOrCreateView(): string
+    {
+        return self::baseView().'user.employees.createOrEdit';
+    }
+    //-------------------------------------------------------
     //------------------------------------------------- Delivery
     public static function getDeliveryListView(): string
     {

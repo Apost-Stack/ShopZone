@@ -5,6 +5,7 @@ namespace App\Models\Users;
 use App\Models\Action\Order;
 use App\Models\Base\Province;
 use App\Models\Base\Status;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
