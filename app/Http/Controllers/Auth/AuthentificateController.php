@@ -62,7 +62,7 @@ class AuthentificateController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Déconnecté']);
+        return redirect('public.home')->with('success', 'Déconnecté avec succès');
     }
 
     /**

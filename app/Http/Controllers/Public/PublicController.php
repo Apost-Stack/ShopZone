@@ -18,4 +18,11 @@ class PublicController extends Controller
     {
         return view(CommonPublicView::getAboutView());
     }
+
+    public function contact(): View
+    {
+        return view(CommonPublicView::getContactView());
+    }
+
+
 }

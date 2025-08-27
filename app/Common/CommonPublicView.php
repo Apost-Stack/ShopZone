@@ -12,6 +12,11 @@ class CommonPublicView
     {
         return self::baseView().'home.home';
     }
+
+    public static function getContactView(): string
+    {
+        return self::baseView().'contact.contact';
+    }
     private static function baseView(): string
     {
         return "public.";

@@ -94,35 +94,49 @@
                 <i class="bi bi-person"></i>
               </button>
               <div class="dropdown-menu">
-                <div class="dropdown-header">
-                  <h6>Welcome to <span class="sitename">FashionStore</span></h6>
+              <div class="dropdown-header">
+                  <h6>Welcome to <span class="sitename">ShopZone</span></h6>
                   <p class="mb-0">Access account &amp; manage orders</p>
-                </div>
-                @auth
-                    <div class="dropdown-body">
-                        <a class="dropdown-item d-flex align-items-center" href="account.html">
-                            <i class="bi bi-person-circle me-2"></i>
-                            <span>My Profile</span>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="account.html">
-                            <i class="bi bi-bag-check me-2"></i>
-                            <span>My Orders</span>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="account.html">
-                            <i class="bi bi-heart me-2"></i>
-                            <span>My Wishlist</span>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="account.html">
-                            <i class="bi bi-gear me-2"></i>
-                            <span>Settings</span>
-                        </a>
-                    </div>
-                @endauth
-                <div class="dropdown-footer">
-                  <a href="{{route('Auth.login')}}" class="btn btn-primary w-100 mb-2">Sign In</a>
-                  <a href="{{route('Auth.registerCustomerView')}}" class="btn btn-outline-primary w-100">Register</a>
-                </div>
               </div>
+
+              {{-- Si connecté --}}
+              @auth
+                  <div class="dropdown-body">
+                      <a class="dropdown-item d-flex align-items-center" href="">
+                          <i class="bi bi-person-circle me-2"></i>
+                          <span>My Profile</span>
+                      </a>
+                      <a class="dropdown-item d-flex align-items-center" href="">
+                          <i class="bi bi-bag-check me-2"></i>
+                          <span>My Orders</span>
+                      </a>
+                      <a class="dropdown-item d-flex align-items-center" href="">
+                          <i class="bi bi-heart me-2"></i>
+                          <span>My Wishlist</span>
+                      </a>
+                      <a class="dropdown-item d-flex align-items-center" href="">
+                          <i class="bi bi-gear me-2"></i>
+                          <span>Settings</span>
+                      </a>
+                      <hr>
+                      <form method="POST" action="{{ route('Auth.logout') }}">
+                          @csrf
+                          <button type="submit" class="dropdown-item d-flex align-items-center text-danger">
+                              <i class="bi bi-box-arrow-right me-2"></i>
+                              <span>Logout</span>
+                          </button>
+                      </form>
+                  </div>
+              @endauth
+
+              {{-- Si NON connecté --}}
+              @guest
+                  <div class="dropdown-footer">
+                      <a href="{{ route('Auth.login') }}" class="btn btn-primary w-100 mb-2">Sign In</a>
+                      <a href="{{ route('Auth.registerCustomerView') }}" class="btn btn-outline-primary w-100">Register</a>
+                  </div>
+              @endguest
+          </div>
             </div>
 
             <!-- Wishlist -->
@@ -730,7 +744,7 @@
 
             </li><!-- End Products Mega Menu 2 -->
 
-            <li><a href="#">Contact</a></li>
+            <li><a href="{{route('public.contact')}}">Contact</a></li>
 
           </ul>
         </nav>
@@ -754,6 +768,41 @@
   </header>
 
   <main class="main">
+    {{-- Messages Flash --}}
+    <div class="container mt-3">
+
+      {{-- Succès --}}
+      @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="bi bi-check-circle me-2"></i>
+          {{ session('success') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      @endif
+
+      {{-- Erreur --}}
+      @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          {{ session('error') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      @endif
+
+      {{-- Validation errors --}}
+      @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-x-circle me-2"></i>
+          <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      @endif
+
+    </div>
     @yield('content')
   </main>
 
@@ -806,7 +855,7 @@
                 <li><a href="shiping-info.html">Shipping Info</a></li>
                 <li><a href="return-policy.html">Returns &amp; Exchanges</a></li>
                 <li><a href="#">Size Guide</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="{{route('public.contact')}}">Contact Us</a></li>
               </ul>
             </div>
           </div>
