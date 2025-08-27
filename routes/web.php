@@ -3,9 +3,10 @@
 use App\Http\Controllers\Admin\Users\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::prefix('/')->name('public.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Public\PublicController::class, 'home'])->name('home');
+    Route::get('/about', [\App\Http\Controllers\Public\PublicController::class, 'about'])->name('about');
+});
 
 Route::prefix('/Authentication')->name('Auth.')->group(function () {
     Route::get('/login', [\App\Http\Controllers\Auth\AuthentificateController::class, 'loginView'])->name('loginView');
