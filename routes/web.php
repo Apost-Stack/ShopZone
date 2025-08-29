@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Users\UserController;
+use App\Http\Controllers\Exceptions\ErrorController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->name('public.')->group(function () {
@@ -18,7 +19,7 @@ Route::prefix('/Authentication')->name('Auth.')->group(function () {
     Route::post('/logout', [\App\Http\Controllers\Auth\AuthentificateController::class, 'logout'])->name('logout');
 });
 
-Route::prefix('/Administration')->group(function () {
+Route::prefix('/Administration')->middleware('ensure.auth')->group(function () {
     Route::resource('/statuses', \App\Http\Controllers\Admin\Base\StatusController::class);
     //Sel
     Route::prefix('/Sel')->group(function () {
@@ -26,4 +27,12 @@ Route::prefix('/Administration')->group(function () {
             Route::resource('/categories', \App\Http\Controllers\Admin\Sel\Product\CategoryController::class);
         });
     });
+});
+
+
+Route::prefix('/Errors')->name('errors.')->group(function () {
+    Route::get('/401', [ErrorController::class, 'error401'])->name('401');
+    Route::get('/403', [ErrorController::class, 'error403'])->name('403');
+    Route::get('/404', [ErrorController::class, 'error404'])->name('404');
+    Route::get('/500', [ErrorController::class, 'error500'])->name('500');
 });
